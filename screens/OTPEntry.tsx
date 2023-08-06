@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, TextInput, View, Text, StyleSheet, Image } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -26,11 +26,21 @@ type Props = {
   route: OTPScreenRouteProp;
   navigation: OTPEntryScreenNavigationProp;
 };
-  
+
 const OTPEntryScreen: React.FC<Props> = ({ route, navigation }) => {
   const { phone } = route.params;
   const { authState, login, logout } = useAuth();
 
+    
+  useEffect(() => {
+    if (authState.isLoggedIn) {
+      console.log("auth state: ", authState);
+
+      navigation.navigate('Dashboard');
+    }
+  }, [authState]);
+
+  
   const [otp, setOtp] = useState('');
   const [error, setError] = useState<string>('');
 
@@ -70,11 +80,12 @@ const OTPEntryScreen: React.FC<Props> = ({ route, navigation }) => {
 
             login(loginUser);
 
-            console.log("auth state: ", authState);
 
+            /*
             if (authState.isLoggedIn) {
                 navigation.navigate('Dashboard');
             }
+            */
         } else {
             setError(data.message || 'OTP validation failed. Please try again.');
         }

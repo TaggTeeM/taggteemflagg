@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import MapView, { Marker, Region } from 'react-native-maps';
+import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAuth } from '../context/AuthContext';
-import Geolocation from '@react-native-community/geolocation';
-import Geocoder from 'react-native-geocoding';
 
 import { MapCoordinates, Booking } from '../types/BookingTypes';
 
-// Initialize the geocoder module (needs to be done only once)
-Geocoder.init("AIzaSyAwhtbGOva3LF56MAb4xGPiPahNhvTEA5s", {language : "en"}); // use a valid Google Maps API Key
+import taggteem_logo from "../assets/taggteem_logo.jpg";
 
 type RootStackParamList = {
     Login: undefined;
@@ -35,26 +31,6 @@ const BookRide_Options: React.FC<Props> = ({ navigation }) => {
   const [destination, setDestination] = useState<MapCoordinates>({ latitude: 0, longitude: 0, address: "" });
   const [driver, setDriver] = useState('');
   const [cost, setCost] = useState('');
-  
-  useEffect(() => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-
-        Geocoder.from(latitude, longitude).then(
-          response => {
-            const address = response.results[0].formatted_address;
-            setSource({ latitude, longitude, address });
-          },
-          error => {
-            console.error(error);
-          }
-        );
-      },
-      (error) => Alert.alert('Error', JSON.stringify(error)),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
-  }, []);
 
   const handleBooking = () => {
     // Here you would typically send a request to your server to create a new booking
@@ -74,54 +50,61 @@ const BookRide_Options: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-<View style={styles.container}>
-      <Text style={styles.title}>Book a Ride</Text>
-      {authState.isLoggedIn && (
-        <>
-          <Text>Source</Text>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: source.latitude,
-              longitude: source.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            onRegionChangeComplete={(region: Region) => setSource({ latitude: region.latitude, longitude: region.longitude, address: '' })}
-          >
-            <Marker coordinate={source} />
-          </MapView>
-          
-          <Text>Destination</Text>
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: destination.latitude,
-              longitude: destination.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            onRegionChangeComplete={(region: Region) => setDestination({ latitude: region.latitude, longitude: region.longitude, address: '' })}
-          >
-            <Marker coordinate={destination} />
-          </MapView>
-
-          <Button title="Book Now" onPress={handleBooking} />
-        </>
-      )}
-      {!authState.isLoggedIn && (
-        <Text style={styles.text}>Please log in to book a ride.</Text>
-      )}
+    <ScrollView style={styles.container} contentContainerStyle={styles.content_container}>
+    <View style={styles.headerContainer}>
+        <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
+        <Text style={styles.title_text}>Flagg by TaggTeeM</Text>
     </View>
+
+    <Text style={styles.title}>Ride Options</Text>
+    {authState.isLoggedIn && (
+        <>
+        <Text style={styles.instructionContainer}>This is sample text and will need to be changed to something that works for production. Move the map to choose the drop-off location that you'd like to be dropped off at.</Text>
+        <Text>Preferred Driver</Text>
+        <Text>DROPDOWN HERE</Text>
+
+        <View style={[styles.headerContainer, styles.buttonContainer]}>
+            <Button title="Confirm Options" onPress={handleBooking} />
+        </View>
+        </>
+    )}
+    {!authState.isLoggedIn && (
+        <Text style={styles.text}>Please log in to book a ride.</Text>
+    )}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+    logo: {
+        width: 50, // specify desired width
+        height: 50, // specify desired height
+        alignSelf: "center", // centers the logo horizontally within its container
+        marginRight: 16,
+    },
+    title_text: {
+        fontSize: 24,
+        fontWeight: "bold",
+    },
     container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
+        flex: 1,
+    },
+    content_container: {
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 20,
+    },
+    headerContainer: {
+        width: '100%',
+        flexDirection: 'row',       // Set direction to horizontal
+        alignItems: 'center',       // Vertically align items in the center
+        justifyContent: 'center',
+    },
+    buttonContainer: {
+        justifyContent: 'space-around',
+    },
+    instructionContainer: {
+        marginBottom: 8,
     },
     title: {
       fontSize: 24,
