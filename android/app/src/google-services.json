@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "450101706288",
+    "project_id": "taggteemrideshare-e6c4f",
+    "storage_bucket": "taggteemrideshare-e6c4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450101706288:android:c9c64d4ceae8163bd177f5",
+        "android_client_info": {
+          "package_name": "com.taggteem.flagg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "450101706288-sutlhbum2pk5jj63529ogafieh1romg9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOOYd7IY6RtOWDM7CfsLUgUyuN_5qkDXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "450101706288-sutlhbum2pk5jj63529ogafieh1romg9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "450101706288-8u1e8jquq4oive3omqnddlbdjsb5c8et.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.TaggTeeMRideshare"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450101706288:android:3a3b679f50ca5194d177f5",
+        "android_client_info": {
+          "package_name": "com.taggteem.rideshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "450101706288-sutlhbum2pk5jj63529ogafieh1romg9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOOYd7IY6RtOWDM7CfsLUgUyuN_5qkDXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "450101706288-sutlhbum2pk5jj63529ogafieh1romg9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "450101706288-8u1e8jquq4oive3omqnddlbdjsb5c8et.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.TaggTeeMRideshare"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450101706288:android:28ebb9ecbef34e25d177f5",
+        "android_client_info": {
+          "package_name": "com.taggteemflagg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "450101706288-sutlhbum2pk5jj63529ogafieh1romg9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOOYd7IY6RtOWDM7CfsLUgUyuN_5qkDXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "450101706288-sutlhbum2pk5jj63529ogafieh1romg9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "450101706288-8u1e8jquq4oive3omqnddlbdjsb5c8et.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.TaggTeeMRideshare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
