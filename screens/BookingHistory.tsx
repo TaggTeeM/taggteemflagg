@@ -12,6 +12,9 @@ type RootStackParamList = {
   Dashboard: undefined;
   BookingHistory: undefined;
   RideDetail: { booking: Booking };
+  BecomeADriver: undefined;
+  BecomeADriverConfirmation: undefined;
+  DriveFlagg: undefined;
 };
 
 type BookingHistoryScreenNavigationProp = StackNavigationProp<RootStackParamList, 'BookingHistory'>;

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useAuth } from '../context/AuthContext';
+import { Picker } from '@react-native-picker/picker';
 
+import { useAuth } from '../context/AuthContext';
 import { MapCoordinates, Booking } from '../types/BookingTypes';
 
 import taggteem_logo from "../assets/taggteem_logo.jpg";
@@ -16,6 +17,9 @@ type RootStackParamList = {
     BookingHistory: undefined;
     BookRide: undefined;
     RideDetail: { booking: Booking };
+    BecomeADriver: undefined;
+    BecomeADriverConfirmation: undefined;
+    DriveFlagg: undefined;
 };
 
 type BookRideScreenNavigationProp = StackNavigationProp<RootStackParamList, 'BookRide'>;
@@ -31,6 +35,26 @@ const BookRide_Options: React.FC<Props> = ({ navigation }) => {
   const [destination, setDestination] = useState<MapCoordinates>({ latitude: 0, longitude: 0, address: "" });
   const [driver, setDriver] = useState('');
   const [cost, setCost] = useState('');
+  const [preferredDrivers, setPreferredDrivers] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('http://10.0.2.2:3000/api/preferred-drivers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userInternalId: authState.loggedInUser?.id,
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        setPreferredDrivers(data); // Assuming your endpoint returns an array of drivers
+      })
+      .catch(error => {
+        console.error("Error fetching drivers:", error);
+      });
+  }, []);
 
   const handleBooking = () => {
     // Here you would typically send a request to your server to create a new booking
@@ -51,26 +75,41 @@ const BookRide_Options: React.FC<Props> = ({ navigation }) => {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content_container}>
-    <View style={styles.headerContainer}>
-        <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
-        <Text style={styles.title_text}>Flagg by TaggTeeM</Text>
-    </View>
-
-    <Text style={styles.title}>Ride Options</Text>
-    {authState.isLoggedIn && (
-        <>
-        <Text style={styles.instructionContainer}>This is sample text and will need to be changed to something that works for production. Move the map to choose the drop-off location that you'd like to be dropped off at.</Text>
-        <Text>Preferred Driver</Text>
-        <Text>DROPDOWN HERE</Text>
-
-        <View style={[styles.headerContainer, styles.buttonContainer]}>
-            <Button title="Confirm Options" onPress={handleBooking} />
+        <View style={styles.headerContainer}>
+            <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
+            <Text style={styles.title_text}>Flagg by TaggTeeM</Text>
         </View>
-        </>
-    )}
-    {!authState.isLoggedIn && (
-        <Text style={styles.text}>Please log in to book a ride.</Text>
-    )}
+
+        <Text style={styles.title}>Ride Options</Text>
+        {authState.isLoggedIn && (
+            <>
+            <Text style={styles.instructionContainer}>This is sample text and will need to be changed to something that works for production. Move the map to choose the drop-off location that you'd like to be dropped off at.</Text>
+            <View style={styles.optionsArea}>
+                <Text>Preferred Driver</Text>
+                <Picker
+                    selectedValue={driver}
+                    onValueChange={(itemValue, itemIndex) => setDriver(itemValue)}
+                    style={ styles.driversList } // Adjust styles as needed
+                >
+                    {preferredDrivers.map(driver => (
+                        <Picker.Item key={driver.InternalId} label={driver.name} value={driver.InternalId} />
+                    ))}
+                </Picker>
+
+                <Text>Rideshare Teir</Text>
+                <View>
+                    <Text>TIER RADIOS HERE</Text>
+                </View>
+            </View>
+
+            <View style={[styles.headerContainer, styles.buttonContainer]}>
+                <Button title="Confirm Options" onPress={handleBooking} />
+            </View>
+            </>
+        )}
+        {!authState.isLoggedIn && (
+            <Text style={styles.text}>Please log in to book a ride.</Text>
+        )}
     </ScrollView>
   );
 };
@@ -85,6 +124,13 @@ const styles = StyleSheet.create({
     title_text: {
         fontSize: 24,
         fontWeight: "bold",
+    },
+    optionsArea: {
+        width: "100%",
+    },
+    driversList: { 
+        height: 50, 
+        width: 150 
     },
     container: {
         flex: 1,

@@ -36,13 +36,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [authState, setAuthState] = useState(defaultAuthState);
   
   const login = (user: User) => {
-    //setAuthState(currentState => ({ ...currentState, isLoggedIn: true, loggedInUser: user, bookings: [] }));
+    setAuthState(currentState => ({ ...currentState, isLoggedIn: true, loggedInUser: user, bookings: [] }));
+    /*
     setAuthState(currentState => {
       console.log("current state:", currentState);
       console.log("state user:", user);
 
       return { ...currentState, isLoggedIn: true, loggedInUser: user, bookings: [] };
     });
+    */
   };
 
   const logout = () => {

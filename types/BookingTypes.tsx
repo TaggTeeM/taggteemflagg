@@ -14,11 +14,17 @@ export interface MapCoordinates {
     date: string;
   }
   
-  
+export type Driver = {
+  online: boolean,
+  approved: boolean
+} | null;
+
 export type User = {
   id: string,
   firstName: string,
   lastName: string,
   email: string,
-  phone: string
+  phone: string,
+  driver: Driver,
+  isDriving: boolean
 } | null;

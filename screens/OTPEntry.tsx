@@ -17,6 +17,9 @@ type RootStackParamList = {
   BookingHistory: undefined;
   BookRide: undefined;
   RideDetail: { booking: Booking };
+  BecomeADriver: undefined;
+  BecomeADriverConfirmation: undefined;
+  DriveFlagg: undefined;
 };
   
 type OTPScreenRouteProp = RouteProp<RootStackParamList, 'OTPEntry'>;
@@ -40,7 +43,7 @@ const OTPEntryScreen: React.FC<Props> = ({ route, navigation }) => {
     }
   }, [authState]);
 
-  
+
   const [otp, setOtp] = useState('');
   const [error, setError] = useState<string>('');
 
@@ -73,7 +76,9 @@ const OTPEntryScreen: React.FC<Props> = ({ route, navigation }) => {
                 firstName: data.user.firstName, 
                 lastName: data.user.lastName, 
                 email: data.user.email, 
-                phone: data.user.phone 
+                phone: data.user.phone,
+                driver: null,
+                isDriving: false,
             };
             
             console.log("constructed data:", loginUser);

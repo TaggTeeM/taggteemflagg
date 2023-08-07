@@ -18,6 +18,9 @@ type RootStackParamList = {
   BookingHistory: undefined;
   BookRide: undefined;
   RideDetail: { booking: Booking };
+  BecomeADriver: undefined;
+  BecomeADriverConfirmation: undefined;
+  DriveFlagg: undefined;
 };
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -131,7 +134,7 @@ const Login: React.FC<Props> = ({ navigation }) => {
   };
   
   return (
-    <View>
+    <View style={ styles.viewPort }>
       <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
       <Text style={ styles.title_text }>Welcome to Flagg by TaggTeeM!</Text>
       <Text>This is the login page. There is some introduction text here that will give a sentence about Flagg.</Text>
@@ -156,6 +159,9 @@ const Login: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  viewPort: {
+    padding: 6,
+  },
   logo: {
     width: 150,  // specify desired width
     height: 150, // specify desired height

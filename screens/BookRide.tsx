@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import Geolocation from "@react-native-community/geolocation";
 import Geocoder from "react-native-geocoding";
 
-import { MapCoordinates, Booking } from "../types/BookingTypes";
+import { Booking } from "../types/BookingTypes";
 
 import taggteem_logo from "../assets/taggteem_logo.jpg";
 
@@ -24,6 +24,9 @@ type RootStackParamList = {
   BookRide_Pickup: { booking: Booking };
   BookRide_Options: { booking: Booking };
   RideDetail: { booking: Booking };
+  BecomeADriver: undefined;
+  BecomeADriverConfirmation: undefined;
+  DriveFlagg: undefined;
 };
 
 type BookRideScreenNavigationProp = StackNavigationProp<RootStackParamList, "BookRide">;
