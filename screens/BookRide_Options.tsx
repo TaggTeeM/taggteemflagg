@@ -38,7 +38,7 @@ const BookRide_Options: React.FC<Props> = ({ navigation }) => {
   const [preferredDrivers, setPreferredDrivers] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://10.0.2.2:3000/api/preferred-drivers', {
+    fetch('http://10.0.2.2:3000/api/get-preferred-drivers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

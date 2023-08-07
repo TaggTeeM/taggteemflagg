@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Button, Image, StyleSheet, ScrollView } from 'react-native';
 import { StackNavigationProp } from "@react-navigation/stack";
 
+import { useAuth } from "../context/AuthContext";
 import { Booking } from "../types/BookingTypes";
 
 import taggteem_logo from '../assets/taggteem_logo.jpg';
@@ -28,22 +29,32 @@ type RootStackParamList = {
   };
   
   const DriveFlagg: React.FC<Props> = ({ navigation }) => {
+    const { authState } = useAuth();
+
     const handleSignUp = () => {
-        // Handle sign up action here. E.g. navigate to sign up form or send a request, etc.
+        navigation.navigate("Dashboard");
     };
 
-    return (
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-            <View style={styles.logoContainer}>
-                <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
-            </View>
-            <Text style={styles.textTitle}>Congratulations!</Text>
-            <Text style={styles.text}>
-                This is sample text and needs to be changed. You are now signed up to be approved as a Flagg driver. We will be in touch for further information.
-            </Text>
-            <Button title="Back" onPress={handleSignUp} />
-        </ScrollView>
-    );
+    if (!authState?.loggedInUser?.driver?.approved) {
+        return (
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+                <View style={styles.logoContainer}>
+                    <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
+                </View>
+                
+                <Text style={styles.title_text}>Under Review!</Text>
+                <Text>Thank you for your interest in driving with Flagg. Your application is currently under review. We will contact you as soon as we make our decision.</Text>
+                
+                <Button title="Back" onPress={handleSignUp} />
+            </ScrollView>
+        );
+    } else {
+        return (
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+                <Text>&lt;&lt;&lt;MAP VIEW HERE&gt;&gt;&gt;</Text>
+            </ScrollView>
+        );
+    }
 };
 
 const styles = StyleSheet.create({
@@ -59,6 +70,10 @@ const styles = StyleSheet.create({
         width: 250,  // specify desired width
         alignSelf: 'center', // centers the logo horizontally within its container
         flex: 1,
+    },
+    title_text: {
+        fontSize: 18,
+        fontWeight: "bold"
     },
     container: {
         flex: 1,

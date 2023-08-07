@@ -34,13 +34,36 @@ type RootStackParamList = {
     const [error, setError] = useState<string>('');
 
     const handleSignUp = () => {
-        if (!authState.isLoggedIn || authState.loggedInUser === null)
+        if (!authState.isLoggedIn || authState.loggedInUser === null || authState.loggedInUser === undefined) {
             navigation.navigate("Login");
 
-        console.log("driver 1:", authState.loggedInUser.driver);
-        authState.loggedInUser.driver = { online: false, approved: true };
-        console.log("driver 2:", authState.loggedInUser.driver);
-        navigation.navigate("BecomeADriverConfirmation");
+            return;
+        }
+
+        const userInternalId = authState.loggedInUser.id;
+
+        // Call the API endpoint
+        fetch('/api/driver-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userInternalId }), // Send userInternalId as payload
+        })
+        .then(response => response.json()) // assuming server responds with json
+        .then(data => {
+            if (data.success) {  // Assuming the API sends back a success field
+                authState.loggedInUser!.driver = { online: data.online, approved: data.approved };
+
+                navigation.navigate("BecomeADriverConfirmation");
+            } else {
+                setError(`Failed to sign up: [${data.errorCode}] ${data.message}`);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            setError('Failed to sign up. Please check your network connection and try again.');
+        });
     };
 
     return (

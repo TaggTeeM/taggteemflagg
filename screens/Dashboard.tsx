@@ -4,6 +4,7 @@ import MapView from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useIsFocused } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { useAuth } from '../context/AuthContext';
 import { Booking } from '../types/BookingTypes';
@@ -47,17 +48,22 @@ const Dashboard: React.FC<Props> = ({ navigation }) => {
   });
   const { authState, logout } = useAuth();
   const user = authState.loggedInUser;
+  
+  /*
+  useFocusEffect(
+    React.useCallback(() => {
+      const unsubscribe = API.subscribe(userId, user => setUser(data));
 
+      return () => unsubscribe();
+    }, [userId])
+  );
+  */
   const isFocused = useIsFocused();
 
   console.log("is focused:", isFocused);
   console.log("driver 4:", authState.loggedInUser);
 
-  const [driveButtonText, setDriveButtonText] = useState("Become A Driver");
-
   useEffect(() => {
-    setDriveButtonText(user?.driver?.approved ? "Drive Now" : "Become a Driver");
-
     Geolocation.getCurrentPosition(
       (position) => {
         setRegion({
@@ -80,13 +86,6 @@ const Dashboard: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  const handleDriveNow = () => {
-    if (user?.driver?.approved)
-      navigation.navigate('DriveFlagg');
-    else
-      navigation.navigate('BecomeADriver');
-  };
-
   return (
     <ScrollView style={ styles.viewPort }>
       <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
@@ -101,14 +100,12 @@ const Dashboard: React.FC<Props> = ({ navigation }) => {
       <Button title="My Account" onPress={() => navigation.navigate('Profile')} />
 
       {/* Conditionally render the "Become a Driver" and "Drive Now" buttons */}
-      {!user?.driver?.approved && (
+      {!user?.driver && (
         <Button title="Become a Driver" onPress={() => navigation.navigate('BecomeADriver')} />
       )}
-      {user?.driver?.approved && (
+      {user?.driver && (
         <Button title="Drive Now" onPress={() => navigation.navigate('DriveFlagg')} />
       )}
-
-      <Button title={driveButtonText} onPress={() => handleDriveNow()} />
 
       <Button title="Logout" onPress={handleLogout} />
     </ScrollView>
