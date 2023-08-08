@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, Image } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Picker } from '@react-native-picker/picker';
 
@@ -16,19 +17,26 @@ type RootStackParamList = {
     Profile: undefined;
     BookingHistory: undefined;
     BookRide: undefined;
+    BookRide_Pickup: { booking: Booking | null };
+    BookRide_Options: { booking: Booking | null };
+    BookRide_Confirmation: { booking: Booking | null };
     RideDetail: { booking: Booking };
     BecomeADriver: undefined;
     BecomeADriverConfirmation: undefined;
     DriveFlagg: undefined;
 };
 
-type BookRideScreenNavigationProp = StackNavigationProp<RootStackParamList, 'BookRide'>;
+type BookRideOptionsScreenRouteProp = RouteProp<RootStackParamList, 'RideDetail'>;
+type BookRideOptionsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'BookRide'>;
 
 type Props = {
-  navigation: BookRideScreenNavigationProp;
+  route?: BookRideOptionsScreenRouteProp;
+  navigation: BookRideOptionsScreenNavigationProp;
 };
   
-const BookRide_Options: React.FC<Props> = ({ navigation }) => {
+const BookRide_Options: React.FC<Props> = ({ navigation, route }) => {
+  const newBooking = route ? route.params.booking : null;
+
   const { authState, addBooking } = useAuth();
   
   const [source, setSource] = useState<MapCoordinates>({ latitude: 0, longitude: 0, address: "" });
@@ -59,18 +67,8 @@ const BookRide_Options: React.FC<Props> = ({ navigation }) => {
   const handleBooking = () => {
     // Here you would typically send a request to your server to create a new booking
     // After successfully creating the booking, navigate back to the dashboard
-    const newBooking: Booking = {
-        id: '-1',
-        sourceCoordinates: source,
-        destinationCoordinates: destination,
-        driverName: "NA",
-        tripRating: -1,
-        cost: -1,
-        date: new Date().toISOString(),
-    };
 
-    addBooking(newBooking);
-    navigation.navigate('RideDetail', { booking: newBooking });
+    navigation.navigate('BookRide_Pickup', { booking: newBooking });
   };
 
   return (
@@ -84,6 +82,8 @@ const BookRide_Options: React.FC<Props> = ({ navigation }) => {
         {authState.isLoggedIn && (
             <>
             <Text style={styles.instructionContainer}>This is sample text and will need to be changed to something that works for production. Move the map to choose the drop-off location that you'd like to be dropped off at.</Text>
+            <Text>Current Pick Up: {newBooking?.sourceCoordinates.address}</Text>
+            <Text>Current Destination: {newBooking?.destinationCoordinates.address}</Text>
             <View style={styles.optionsArea}>
                 <Text>Preferred Driver</Text>
                 <Picker

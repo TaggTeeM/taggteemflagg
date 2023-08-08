@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import "RNSplashScreen.h"
 
 #import <React/RCTBundleURLProvider.h>
 #import <GoogleMaps/GoogleMaps.h>
@@ -12,6 +13,7 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
+  [RNSplashScreen show];
   [GMSServices provideAPIKey:@"AIzaSyAwhtbGOva3LF56MAb4xGPiPahNhvTEA5s"]; // add this line using the api key obtained from Google Console
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];

@@ -3,8 +3,8 @@ import { TextInput as RNTextInput } from 'react-native';
 import { Button, TextInput, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
-import { Booking } from '../types/BookingTypes';
 import { IsValidPhoneNumber } from '../middleware/Validators';
 
 import taggteem_logo from '../assets/taggteem_logo.jpg';
@@ -13,14 +13,6 @@ type RootStackParamList = {
   Login: undefined;
   OTPEntry: { phone: string };
   SignUp: undefined;
-  Dashboard: undefined;
-  Profile: undefined;
-  BookingHistory: undefined;
-  BookRide: undefined;
-  RideDetail: { booking: Booking };
-  BecomeADriver: undefined;
-  BecomeADriverConfirmation: undefined;
-  DriveFlagg: undefined;
 };
 
 type SignUpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
@@ -46,6 +38,15 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
   const handlePhoneChange = (text: string) => {
     setPhone(text);
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setError("");
+      setSuccess("");
+  
+      return () => null;
+    }, [])
+  );
 
   useEffect(() => {
     setError("");

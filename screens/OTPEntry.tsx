@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Button, TextInput, View, Text, StyleSheet, Image } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { useAuth } from '../context/AuthContext';
-import { Booking, User } from '../types/BookingTypes';
+import { User } from '../types/BookingTypes';
 
 import taggteem_logo from '../assets/taggteem_logo.jpg';
 
@@ -12,14 +13,7 @@ type RootStackParamList = {
   Login: undefined;
   OTPEntry: { phone: string };
   SignUp: undefined;
-  Dashboard: undefined;
-  Profile: undefined;
-  BookingHistory: undefined;
-  BookRide: undefined;
-  RideDetail: { booking: Booking };
-  BecomeADriver: undefined;
-  BecomeADriverConfirmation: undefined;
-  DriveFlagg: undefined;
+  MainDrawer: undefined;
 };
   
 type OTPScreenRouteProp = RouteProp<RootStackParamList, 'OTPEntry'>;
@@ -34,18 +28,26 @@ const OTPEntryScreen: React.FC<Props> = ({ route, navigation }) => {
   const { phone } = route.params;
   const { authState, login, logout } = useAuth();
 
-    
-  useEffect(() => {
-    if (authState.isLoggedIn) {
-      console.log("auth state: ", authState);
-
-      navigation.navigate('Dashboard');
-    }
-  }, [authState]);
-
-
   const [otp, setOtp] = useState('');
   const [error, setError] = useState<string>('');
+  const [success, setSuccess] = useState('');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setError("");
+      setSuccess("");
+  
+      return () => null;
+    }, [])
+  );
+    
+  useEffect(() => {
+    if (authState.isLoggedIn && authState.loggedInUser) {
+      setSuccess("OTP accepted, logging in" + authState.loggedInUser.phone);
+
+      navigation.navigate('MainDrawer');
+    }
+  }, [authState]);
 
   const handleOtpChange = (text: string) => {
     setOtp(text);
@@ -77,20 +79,13 @@ const OTPEntryScreen: React.FC<Props> = ({ route, navigation }) => {
                 lastName: data.user.lastName, 
                 email: data.user.email, 
                 phone: data.user.phone,
-                driver: null,
+                driver: data.user.driver,
                 isDriving: false,
             };
             
             console.log("constructed data:", loginUser);
 
-            login(loginUser);
-
-
-            /*
-            if (authState.isLoggedIn) {
-                navigation.navigate('Dashboard');
-            }
-            */
+            login(loginUser); // async effect hook above takes care of navigation
         } else {
             setError(data.message || 'OTP validation failed. Please try again.');
         }
@@ -103,10 +98,14 @@ const OTPEntryScreen: React.FC<Props> = ({ route, navigation }) => {
   
     const validateForm = (): boolean => {
         if (!/^\d{6}$/.test(otp)) {
+          setSuccess("");
           setError('OTP must be a 6-digit number.');
           return false;
         }
+
+        setSuccess("");
         setError(''); // Clear any previous errors
+
         return true;
       };
       
@@ -124,6 +123,7 @@ const OTPEntryScreen: React.FC<Props> = ({ route, navigation }) => {
         value={otp}
       />
       {error !== '' && <Text style={styles.errortext}>{error}</Text>}
+      {success !== '' && <Text style={styles.success_text}>{success}</Text>}
       <Button title="Submit" onPress={handleOTPSubmit} />
     </View>
   );
@@ -139,6 +139,9 @@ const styles = StyleSheet.create({
     title_text: {
         fontSize: 18,
         fontWeight: "bold"
+    },
+    success_text: {
+      color: 'limegreen'
     },
     errortext: {
       color: 'tomato'

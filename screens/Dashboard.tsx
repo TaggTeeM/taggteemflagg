@@ -12,7 +12,6 @@ import { Booking } from '../types/BookingTypes';
 import taggteem_logo from '../assets/taggteem_logo.jpg';
 
 type RootStackParamList = {
-  PastRides: undefined;
   Login: undefined;
   OTPEntry: { phone: string };
   SignUp: undefined;
@@ -46,7 +45,7 @@ const Dashboard: React.FC<Props> = ({ navigation }) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
-  const { authState, logout } = useAuth();
+  const { authState } = useAuth();
   const user = authState.loggedInUser;
   
   /*
@@ -57,11 +56,11 @@ const Dashboard: React.FC<Props> = ({ navigation }) => {
       return () => unsubscribe();
     }, [userId])
   );
-  */
   const isFocused = useIsFocused();
 
   console.log("is focused:", isFocused);
   console.log("driver 4:", authState.loggedInUser);
+  */
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -77,15 +76,6 @@ const Dashboard: React.FC<Props> = ({ navigation }) => {
     );
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigation.navigate('Login');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <ScrollView style={ styles.viewPort }>
       <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
@@ -96,18 +86,18 @@ const Dashboard: React.FC<Props> = ({ navigation }) => {
       <Text style={styles.ad_space}>&lt;&lt;&lt;Ad goes here&gt;&gt;&gt;</Text>
 
       <Button title="Find a Ride" onPress={() => navigation.navigate('BookRide')} />
-      <Button title="See Past Rides" onPress={() => navigation.navigate('PastRides')} />
-      <Button title="My Account" onPress={() => navigation.navigate('Profile')} />
+
+      <Text style={styles.ad_space}>&lt;&lt;&lt;Ad goes here&gt;&gt;&gt;</Text>
 
       {/* Conditionally render the "Become a Driver" and "Drive Now" buttons */}
       {!user?.driver && (
         <Button title="Become a Driver" onPress={() => navigation.navigate('BecomeADriver')} />
       )}
       {user?.driver && (
-        <Button title="Drive Now" onPress={() => navigation.navigate('DriveFlagg')} />
+        <Button title="Drive Flagg" onPress={() => navigation.navigate('DriveFlagg')} />
       )}
 
-      <Button title="Logout" onPress={handleLogout} />
+      <Text style={styles.ad_space}>&lt;&lt;&lt;Ad goes here&gt;&gt;&gt;</Text>
     </ScrollView>
   );
 };
@@ -132,6 +122,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   ad_space: {
+    width: "100%",
     borderColor: "black",
     borderWidth: 1,
     borderStyle: "solid",

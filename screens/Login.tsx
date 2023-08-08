@@ -3,8 +3,9 @@ import { TextInput as RNTextInput } from 'react-native';
 import { Button, TextInput, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
-import { Booking } from '../types/BookingTypes';
+import { useAuth } from '../context/AuthContext';
 import { IsValidPhoneNumber } from '../middleware/Validators';
 
 import taggteem_logo from '../assets/taggteem_logo.jpg';
@@ -13,14 +14,6 @@ type RootStackParamList = {
   Login: undefined;
   OTPEntry: { phone: string };
   SignUp: undefined;
-  Dashboard: undefined;
-  Profile: undefined;
-  BookingHistory: undefined;
-  BookRide: undefined;
-  RideDetail: { booking: Booking };
-  BecomeADriver: undefined;
-  BecomeADriverConfirmation: undefined;
-  DriveFlagg: undefined;
 };
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -30,11 +23,21 @@ type Props = {
 };
 
 const Login: React.FC<Props> = ({ navigation }) => {
+  const { authState, login, logout } = useAuth();
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
   const phoneInputRef = React.useRef<RNTextInput>(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setError("");
+      setSuccess("");
+  
+      return () => null;
+    }, [])
+  );
 
   useEffect(() => {
     // Load the phone number from AsyncStorage when the component mounts
@@ -52,6 +55,8 @@ const Login: React.FC<Props> = ({ navigation }) => {
     setError("");
     setSuccess("");
 
+    logout();
+    
     loadPhoneNumber();
   }, []);
 

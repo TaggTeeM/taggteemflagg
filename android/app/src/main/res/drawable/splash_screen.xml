@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The background color of the splash screen -->
+    <item>
+        <color android:color="#FFFFFF"/>  <!-- You can change this to your preferred color -->
+    </item>
+
+    <!-- The logo of your application centered in the middle of the screen -->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/taggteem_logo"/>  <!-- Assume you have a logo.png image in the res/drawable directory. If it's another name, change accordingly -->
+    </item>
+
+</layer-list>
