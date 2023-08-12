@@ -27,7 +27,7 @@ type RootStackParamList = {
   BookRide_Pickup: { booking: Booking | null };
   BookRide_Options: { booking: Booking | null };
   BookRide_Confirmation: { booking: Booking | null };
-  RideDetail: { booking: Booking };
+  RideDetail: { booking: Booking | null };
   BecomeADriver: undefined;
   BecomeADriverConfirmation: undefined;
   DriveFlagg: undefined;
@@ -38,7 +38,7 @@ type BookRidePickupScreenNavigationProp = StackNavigationProp<RootStackParamList
 
 type Props = {
   route?: BookRidePickupScreenRouteProp;
-  navigation: BookRidePickupScreenNavigationProp;
+  navigation?: BookRidePickupScreenNavigationProp;
 };
   
 const BookRide_Pickup: React.FC<Props> = ({ navigation, route }) => {
@@ -116,7 +116,7 @@ const BookRide_Pickup: React.FC<Props> = ({ navigation, route }) => {
     // After successfully creating the booking, navigate back to the dashboard
     newBooking!.sourceCoordinates = { latitude: latitude, longitude: longitude, address: address }
 
-    navigation.navigate('BookRide_Options', { booking: newBooking });
+    navigation!.navigate('BookRide_Options', { booking: newBooking });
   };
 
   return (

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput as RNTextInput } from 'react-native';
-import { Button, TextInput, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Button, TextInput, View, Text, TouchableOpacity, StyleSheet, Image, ImageBackground } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { IsValidPhoneNumber } from '../middleware/Validators';
 
@@ -131,38 +132,83 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
   };
   
   return (
-    <View>
-      <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
-      <Text style={styles.title_text}>Welcome to Flagg by TaggTeeM!</Text>
-      <Text>This is the sign up page. There is some introduction text here that will give a sentence about Flagg.</Text>
-      <Text>If this page is successful, you will get a text message with a one-time password (OTP) that you will enter on the next screen.</Text>
+    <View style={ styles.viewPort }>
+      <ImageBackground
+        source={require('../assets/fade_green_background_1px_height.png')}
+        imageStyle={{ resizeMode: 'stretch' }}
+        style={styles.backgroundImage}
+      >
+        <View style={{width: "100%"}}>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Icon name="arrow-circle-o-left" size={30} color="#ffffff" />
+          </TouchableOpacity>
+        </View>
 
-      <Text style={[styles.input_label, styles.phone_label]}>Phone number</Text>
-      <TextInput
-        ref={phoneInputRef}
-        value={phone}
-        onChangeText={handlePhoneChange}
-        placeholder="Phone number"
-        keyboardType='phone-pad'
-      />
-      <Text style={[styles.input_label]}>First name</Text>
-      <TextInput
-        ref={firstNameInputRef}
-        value={firstName}
-        onChangeText={handleFirstNameChange}
-        placeholder='First name'
-      />
-      {error !== '' && <Text style={styles.errortext}>{error}</Text>}
-      {success !== '' && <Text style={styles.success_text}>{success}</Text>}
-      <Button title="Sign Up" onPress={handleSubmit} />
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text>Already have an account? Log In</Text>
-      </TouchableOpacity>
+        <View style={styles.LogoTitle}>
+          <Text style={ styles.title_text }>Flagg</Text>
+          <Text style={styles.subtitle_text}>Sign Up</Text>
+        </View>
+
+        <View style={{width: "100%"}}>
+          <View>
+            <Text style={[styles.input_label, styles.phone_label]}>Phone number</Text>
+            <TextInput
+              ref={phoneInputRef}
+              value={phone}
+              onChangeText={handlePhoneChange}
+              placeholder="Phone number"
+              keyboardType='phone-pad'
+              style={{color: "white", backgroundColor: "rgba(143, 200, 143, 0.6)", fontWeight: "bold"}}
+            />
+          </View>
+          <View>
+              <Text style={[styles.input_label]}>First name</Text>
+              <TextInput
+                ref={firstNameInputRef}
+                value={firstName}
+                onChangeText={handleFirstNameChange}
+                placeholder='First name'
+                style={{color: "white", backgroundColor: "rgba(143, 200, 143, 0.6)", fontWeight: "bold"}}
+                />
+            </View>
+        </View>
+
+        <View style={{width: "100%"}}>
+          <Button title="Sign Up" onPress={handleSubmit} />
+          {error !== '' && <Text style={styles.errortext}>{error}</Text>}
+          {success !== '' && <Text style={styles.success_text}>{success}</Text>}
+        </View>
+
+        <View style={{flex: 1}}>
+          <Text>&nbsp;</Text>
+        </View>
+
+        <View style={styles.signup_touchable}>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.signup_text}>Already have an account? Log In</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  viewPort: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: -1
+  },
+  backgroundImage: {
+    ...StyleSheet.absoluteFillObject,
+    padding: 16, 
+    display: "flex", 
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   logo: {
     width: 150,  // specify desired width
     height: 150, // specify desired height
@@ -175,15 +221,53 @@ const styles = StyleSheet.create({
   success_text: {
     color: 'limegreen'
   },
+  LogoTitle: {
+    padding: 6,
+    marginTop: 36,
+  },
   title_text: {
-    fontSize: 18,
-    fontWeight: "bold"
+    fontFamily: "Nexa-Heavy",
+    fontSize:48,
+    //fontWeight: "bold",
+    textAlign: "center",
+    color: "white",
+    textShadowColor: "#003f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 3, height: 3}
+  },
+  subtitle_text: {
+    fontFamily: "Nexa-Heavy",
+    fontSize:24,
+    textAlign: "center",
+    color: "white",
+    textShadowColor: "#003f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 1, height: 1}
   },
   input_label: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: "white",
+    textShadowColor: "#003f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 1, height: 1}
   },
   phone_label: {
     marginTop: 8
+  },
+  signup_touchable: {
+    marginTop: 36,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    width: "90%",
+    borderRadius: 4,
+    padding: 2,
+  },
+  signup_text: {
+    fontWeight: "bold",
+    color: "white",
+    textShadowColor: "#007f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 1, height: 1},
+    textAlign: "center",
   }
 });
 

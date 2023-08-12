@@ -10,7 +10,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/taggteem_logo"/>  <!-- Assume you have a logo.png image in the res/drawable directory. If it's another name, change accordingly -->
+            android:src="@drawable/flagg__splash_logo_temp"/>  <!-- Assume you have a logo.png image in the res/drawable directory. If it's another name, change accordingly -->
     </item>
 
 </layer-list>

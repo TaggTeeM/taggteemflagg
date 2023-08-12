@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextInput, View, Text, StyleSheet, Image } from 'react-native';
+import { Button, TextInput, View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { useAuth } from '../context/AuthContext';
 import { User } from '../types/BookingTypes';
@@ -110,48 +111,115 @@ const OTPEntryScreen: React.FC<Props> = ({ route, navigation }) => {
       };
       
   return (
-    <View>
-      <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
-      <Text style={styles.title_text}>Welcome to Flagg by TaggTeeM!</Text>
-      <Text>This is the one-time password entry page. There is some introduction text here that will give a sentence about Flagg.</Text>
+    <View style={ styles.viewPort }>
+      <ImageBackground
+        source={require('../assets/fade_green_background_1px_height.png')}
+        imageStyle={{ resizeMode: 'stretch' }}
+        style={styles.backgroundImage}
+      >
+        <View>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Icon name="arrow-circle-o-left" size={30} color="#ffffff" style={styles.fixedMarker} />
+          </TouchableOpacity>
+        </View>
 
-      <Text style={[styles.input_label, styles.phone_label]}>One-time password (OTP)</Text>
-      <TextInput
-        placeholder="OTP"
-        onChangeText={handleOtpChange}
-        keyboardType="numeric"
-        value={otp}
-      />
-      {error !== '' && <Text style={styles.errortext}>{error}</Text>}
-      {success !== '' && <Text style={styles.success_text}>{success}</Text>}
-      <Button title="Submit" onPress={handleOTPSubmit} />
+        <View style={styles.LogoTitle}>
+          <Text style={ styles.title_text }>Flagg</Text>
+          <Text style={styles.subtitle_text}>Log In</Text>
+        </View>
+
+        <View>
+          <Text style={[styles.input_label, styles.phone_label]}>One-time password (OTP)</Text>
+          <TextInput
+            placeholder="OTP"
+            onChangeText={handleOtpChange}
+            keyboardType="numeric"
+            value={otp}
+            style={{color: "white", backgroundColor: "rgba(143, 200, 143, 0.6)", fontWeight: "bold"}}
+            />
+        </View>
+
+        <View>
+          <Button title="Submit" onPress={handleOTPSubmit} />
+          {error !== '' && <Text style={styles.errortext}>{error}</Text>}
+          {success !== '' && <Text style={styles.success_text}>{success}</Text>}
+        </View>
+      </ImageBackground>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    logo: {
-        width: 150,  // specify desired width
-        height: 150, // specify desired height
-        alignSelf: 'center', // centers the logo horizontally within its container
-        marginBottom: 20, // spacing below the logo
-      },
-    title_text: {
-        fontSize: 18,
-        fontWeight: "bold"
-    },
-    success_text: {
-      color: 'limegreen'
-    },
-    errortext: {
-      color: 'tomato'
-    },
-    input_label: {
-        fontWeight: "bold"
-    },
-    phone_label: {
-        marginTop: 8
-    }
+  viewPort: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: -1
+  },
+  fixedMarker: {
+  },
+  backgroundImage: {
+    ...StyleSheet.absoluteFillObject,
+    padding: 16, 
+    display: "flex", 
+    flexDirection: "column"
+  },
+  logo: {
+    width: 150,  // specify desired width
+    height: 150, // specify desired height
+    alignSelf: 'center', // centers the logo horizontally within its container
+    marginBottom: 20, // spacing below the logo
+  },
+  LogoTitle: {
+    padding: 6,
+    marginTop: 36,
+  },
+  title_text: {
+    fontFamily: "Nexa-Heavy",
+    fontSize:48,
+    //fontWeight: "bold",
+    textAlign: "center",
+    color: "white",
+    textShadowColor: "#003f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 3, height: 3}
+  },
+  subtitle_text: {
+    fontFamily: "Nexa-Heavy",
+    fontSize:24,
+    textAlign: "center",
+    color: "white",
+    textShadowColor: "#003f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 1, height: 1}
+  },
+  input_label: {
+    fontWeight: "bold",
+    color: "white",
+    textShadowColor: "#003f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 1, height: 1}
+  },
+  success_text: {
+    color: 'limegreen'
+  },
+  errortext: {
+    color: 'tomato'
+  },
+  phone_label: {
+      marginTop: 8
+  },
+  otp_touchable: {
+    marginTop: 36,
+    backgroundColor: "rgba(255, 255, 255, 0.2)"
+  },
+  otp_text: {
+    color: "white",
+    textShadowColor: "#007f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 1, height: 1}
+  }
 });
   
 export default OTPEntryScreen;

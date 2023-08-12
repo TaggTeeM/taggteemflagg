@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TextInput as RNTextInput } from 'react-native';
-import { Button, TextInput, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { Button, TextInput, View, Text, TouchableOpacity, StyleSheet, Image, ImageBackground } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -140,32 +140,66 @@ const Login: React.FC<Props> = ({ navigation }) => {
   
   return (
     <View style={ styles.viewPort }>
-      <Image source={taggteem_logo} style={styles.logo} resizeMode="contain" />
-      <Text style={ styles.title_text }>Welcome to Flagg by TaggTeeM!</Text>
-      <Text>This is the login page. There is some introduction text here that will give a sentence about Flagg.</Text>
-      <Text>If this page is successful, you will get a text message with a one-time password (OTP) that you will enter on the next screen.</Text>
+      <ImageBackground
+        source={require('../assets/fade_green_background_1px_height.png')}
+        imageStyle={{ resizeMode: 'stretch' }}
+        style={styles.backgroundImage}
+      >
+        <View style={styles.LogoTitle}>
+          <Text style={ styles.title_text }>Flagg</Text>
+        </View>
 
-      <Text style={[styles.input_label, styles.phone_label]}>Phone number</Text>
-      <TextInput
-        ref={phoneInputRef}
-        placeholder="Phone number"
-        onChangeText={handlePhoneChange}
-        keyboardType="phone-pad"
-        value={phone}
-      />
-      {error !== '' && <Text style={styles.errortext}>{error}</Text>}
-      {success !== '' && <Text style={styles.success_text}>{success}</Text>}
-      <Button title="Log In" onPress={handleSubmit} />
-      <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-        <Text>Don't have an account? Sign Up</Text>
-      </TouchableOpacity>
+        <View style={{marginTop: 16, width: "100%"}}>
+          <Text style={[styles.input_label, styles.phone_label]}>Phone number</Text>
+          <TextInput
+            ref={phoneInputRef}
+            placeholder="Phone number"
+            onChangeText={handlePhoneChange}
+            keyboardType="phone-pad"
+            value={phone}
+            style={{color: "white", backgroundColor: "rgba(143, 200, 143, 0.6)", fontWeight: "bold"}}
+          />
+        </View>
+
+        <View style={{width: "100%"}}>
+          <Button title="Log In" onPress={handleSubmit} />
+          {error !== '' && <Text style={styles.errortext}>{error}</Text>}
+          {success !== '' && <Text style={styles.success_text}>{success}</Text>}
+        </View>
+
+        <View style={{flex: 1}}>
+          <Text>&nbsp;</Text>
+        </View>
+
+        <View style={styles.signup_touchable}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <Text style={styles.signup_text}>Don't have an account? Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   viewPort: {
+    ...StyleSheet.absoluteFillObject,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: -1
+  },
+  backgroundImage: {
+    ...StyleSheet.absoluteFillObject,
+    padding: 16, 
+    display: "flex", 
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  LogoTitle: {
     padding: 6,
+    marginTop: 36,
   },
   logo: {
     width: 150,  // specify desired width
@@ -177,17 +211,41 @@ const styles = StyleSheet.create({
     color: 'tomato'
   },
   success_text: {
-    color: 'limegreen'
+    color: 'lime'
   },
   title_text: {
-    fontSize: 18,
-    fontWeight: "bold"
+    fontSize:64,
+    color: "#ffffff",
+    textAlign: "center",
+    textShadowColor: "#003f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 3, height: 3},
+    fontFamily: "Nexa-Heavy"
   },
   input_label: {
-    fontWeight: "bold"
+    fontFamily: "Nexa-Heavy"
   },
   phone_label: {
-    marginTop: 8
+    marginTop: 8,
+    color: "white",
+    textShadowColor: "#003f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 3, height: 3}
+  },
+  signup_touchable: {
+    marginTop: 36,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    width: "90%",
+    borderRadius: 4,
+    padding: 2,
+  },
+  signup_text: {
+    fontWeight: "bold",
+    color: "white",
+    textShadowColor: "#007f00",
+    textShadowRadius: 1,
+    textShadowOffset: {width: 1, height: 1},
+    textAlign: "center"
   }
 });
 

@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Entypo';
 //import firebase from '@react-native-firebase/app';
 import SplashScreen from 'react-native-splash-screen';
+import Toast from 'react-native-toast-message';
 
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -39,7 +40,7 @@ type RootStackParamList = {
   BookRide_Pickup: { booking: Booking | null };
   BookRide_Options: { booking: Booking | null };
   BookRide_Confirmation: { booking: Booking | null };
-  RideDetail: { booking: Booking };
+  RideDetail: { booking: Booking | null };
   BecomeADriver: undefined;
   BecomeADriverConfirmation: undefined;
   DriveFlagg: undefined;
@@ -57,7 +58,7 @@ type RootDrawerParamList = {
   BookRide_Pickup: { booking: Booking | null };
   BookRide_Options: { booking: Booking | null };
   BookRide_Confirmation: { booking: Booking | null };
-  RideDetail: { booking: Booking };
+  RideDetail: { booking: Booking | null };
   BecomeADriver: undefined;
   BecomeADriverConfirmation: undefined;
   DriveFlagg: undefined;
@@ -73,9 +74,9 @@ const App: React.FC = () => {
       <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="MainDrawer" component={MainDrawer} options={{headerShown: false}}/>
-          <Stack.Screen name="Login" component={Login} options={{ title: 'Login' }} />
-          <Stack.Screen name="OTPEntry" component={OTPEntry} options={{ title: 'OTP Entry' }} />
-          <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'Sign Up' }} />
+          <Stack.Screen name="Login" component={Login} options={{ title: 'Login', header: () => null }} />
+          <Stack.Screen name="OTPEntry" component={OTPEntry} options={{ title: 'OTP Entry', header: () => null }} />
+          <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'Sign Up', header: () => null }} />
           <Stack.Screen name="BookRide_Pickup" component={BookRide_Pickup} options={{ title: 'Ride Pickup Location' }} />
           <Stack.Screen name="BookRide_Options" component={BookRide_Options} options={{ title: 'Ride Options' }} />
           <Stack.Screen name="BookRide_Confirmation" component={BookRide_Confirmation} options={{ title: 'Ride Confirmation' }} />
@@ -83,6 +84,7 @@ const App: React.FC = () => {
           <Stack.Screen name="BecomeADriverConfirmation" component={BecomeADriverConfirmation} options={{ title: 'Sign-up Confirmation', headerLeft: () => null, }} />
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast />
     </AuthProvider>
   );
 }
@@ -102,17 +104,17 @@ const MainDrawer: React.FC = () => {
   };
   
   return (
-    <Drawer.Navigator initialRouteName='Dashboard'>
-      <Drawer.Screen name="Dashboard" component={Dashboard} options={{ title: 'Home' }} />
-      <Drawer.Screen name="BookRide" component={BookRide} options={{ title: 'Find a Ride' }} />
-      <Drawer.Screen name="BookingHistory" component={BookingHistory} options={{ title: 'Ride History' }} />
-      <Drawer.Screen name="Profile" component={Profile} options={{ title: 'Profile' }} />
+    <Drawer.Navigator initialRouteName='Dashboard' screenOptions={{title: "Flagg", drawerContentStyle: {backgroundColor: "#B1C0AC"}}}>
+      <Drawer.Screen name="Dashboard" component={Dashboard} options={{ title: 'Home', header: () => null }} />
+      <Drawer.Screen name="BookRide" component={BookRide} options={{ title: 'Find a Ride', header: () => null }} />
       {!user?.driver && (
         <Drawer.Screen name="BecomeADriver" component={BecomeADriver} options={{ title: 'Become a Driver' }} />
-      )}
+        )}
       {user?.driver && (
         <Drawer.Screen name="DriveFlagg" component={DriveFlagg} options={{ title: 'Drive Flagg' }} />
-      )}
+        )}
+      <Drawer.Screen name="BookingHistory" component={BookingHistory} options={{ title: 'Ride History' }} />
+      <Drawer.Screen name="Profile" component={Profile} options={{ title: 'My Profile' }} />
       <Drawer.Screen 
         name="Logout" 
         component={Dashboard} 
@@ -127,7 +129,7 @@ const MainDrawer: React.FC = () => {
             </TouchableOpacity>
           )
         }}
-      />
+        />
     </Drawer.Navigator>
   );
 }

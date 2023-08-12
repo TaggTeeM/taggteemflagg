@@ -8,9 +8,11 @@ export interface MapCoordinates {
     id: string;
     sourceCoordinates: MapCoordinates;
     destinationCoordinates: MapCoordinates;
-    driverName: string;
-    tripRating: number;
-    cost: number;
+    preferredDriver: string | null;
+    driverName: string | null;
+    tripRating: number | null;
+    tripTier: string | null;
+    cost: number | null;
     date: string;
   }
   

@@ -23,11 +23,16 @@
     "react-native-geocoding": "^0.5.0",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-google-places-autocomplete": "^2.5.1",
+    "react-native-linear-gradient": "^2.8.2",
+    "react-native-localize": "^3.0.2",
     "react-native-maps": "^1.7.1",
+    "react-native-maps-directions": "^1.9.0",
+    "react-native-paper": "^5.10.0",
     "react-native-reanimated": "^3.4.2",
     "react-native-safe-area-context": "^4.7.1",
     "react-native-screens": "^3.24.0",
     "react-native-splash-screen": "^3.3.0",
+    "react-native-toast-message": "^2.1.6",
     "react-native-vector-icons": "^10.0.0"
   },
   "devDependencies": {
